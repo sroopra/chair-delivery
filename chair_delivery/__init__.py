@@ -1,0 +1,1 @@
+"""Chair Count Automation Tool."""
