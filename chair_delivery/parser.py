@@ -2,7 +2,13 @@
 
 import re
 from collections import deque
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, TypeAlias
+
+from .constants import CHAIR_TYPES_SET
+
+RoomPosition: TypeAlias = Tuple[int, int]
+RoomPositions: TypeAlias = Dict[str, RoomPosition]
+ChairCounts: TypeAlias = Dict[str, Dict[str, int]]
 
 
 class RoomParser:
@@ -17,9 +23,9 @@ class RoomParser:
         self.floor_plan = floor_plan
         self.grid: List[List[str]] = []
         self.rooms: Dict[str, Set[Tuple[int, int]]] = {}
-        self.chair_types = {"W", "P", "S", "C"}
+        self.chair_types = CHAIR_TYPES_SET
 
-    def parse(self) -> Dict[str, Dict[str, int]]:
+    def parse(self) -> ChairCounts:
         """Parse the floor plan to extract room and chair information.
 
         Returns:
@@ -38,13 +44,12 @@ class RoomParser:
 
         # Step 3: Map out each room's area using flood fill and return chairs
         return self._map_rooms(room_positions)
-    
 
     def _create_grid(self) -> None:
         """Convert the floor plan string to a 2D grid."""
         self.grid = [list(line) for line in self.floor_plan.splitlines()]
 
-    def _extract_room_names(self) -> Dict[str, Tuple[int, int]]:
+    def _extract_room_names(self) -> RoomPositions:
         """Extract room names from the grid.
 
         Returns:
@@ -63,12 +68,12 @@ class RoomParser:
 
         return room_positions
 
-    def _map_rooms(self, room_positions: Dict[str, Tuple[int, int]]) -> Dict[str, Dict[str, int]]:
+    def _map_rooms(self, room_positions: RoomPositions) -> ChairCounts:
         """Map out each room's area and count chairs using flood fill algorithm.
 
         Args:
             room_positions: Dictionary mapping room names to positions.
-        
+
         Returns:
             Dictionary with room names as keys and chair counts as values.
         """

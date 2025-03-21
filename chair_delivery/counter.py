@@ -2,6 +2,8 @@
 
 from typing import Dict
 
+from .constants import CHAIR_TYPES
+
 
 class ChairCounter:
     """Counter for chairs in a floor plan."""
@@ -13,7 +15,7 @@ class ChairCounter:
             room_data: Dictionary mapping room names to chair counts.
         """
         self.room_data = room_data
-        self.chair_types = ["W", "P", "S", "C"]  # Order for output
+        self.chair_types = CHAIR_TYPES  # Order for output
 
     def count_chairs(self) -> Dict[str, Dict[str, int]]:
         """Count chairs by type for each room and total.
